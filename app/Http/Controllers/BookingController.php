@@ -12,7 +12,7 @@ class BookingController extends Controller
     {
         $trucks = Truck::where('status', 'available')->get();
 
-        return view('booking', compact('trucks'));
+        return view('frontend.booking', compact('trucks'));
     }
 
     public function store(Request $request)
@@ -63,6 +63,6 @@ class BookingController extends Controller
     {
         $booking->load('truck');
 
-        return view('booking-success', compact('booking'));
+        return view('frontend.booking-success', compact('booking'));
     }
 }

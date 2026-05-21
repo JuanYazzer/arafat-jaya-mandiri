@@ -19,7 +19,7 @@ class FrontendController extends Controller
 
     public function about()
     {
-        return view('about');
+        return view('frontend.about');
     }
 
     public function trucks(Request $request)
