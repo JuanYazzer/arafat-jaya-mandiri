@@ -19,7 +19,8 @@ class FrontendController extends Controller
 
     public function about()
     {
-        return view('frontend.about');
+        $totalTrucks = Truck::count();
+        return view('frontend.about', compact('totalTrucks'));
     }
 
     public function trucks(Request $request)

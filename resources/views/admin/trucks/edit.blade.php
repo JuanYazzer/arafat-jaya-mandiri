@@ -93,8 +93,9 @@
                     <div class="mb-4">
                         <label class="block mb-1 font-medium">Gambar / URL Gambar</label>
                         <input type="text" name="image" value="{{ old('image', $truck->image) }}"
-                               placeholder="Opsional"
+                               placeholder="Contoh: truk-1.jpg"
                                class="w-full border-gray-300 rounded">
+                        <p class="text-xs text-gray-500 mt-1">Simpan foto di dalam folder <code>public/images/trucks/</code> lalu ketikkan nama filenya saja di atas.</p>
                         @error('image')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
