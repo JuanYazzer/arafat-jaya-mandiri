@@ -16,8 +16,16 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $user = $request->user();
+        $totalBookings = $user->bookings()->count();
+        $confirmedBookings = $user->bookings()->where('status', 'confirmed')->count();
+        $completedBookings = $user->bookings()->where('status', 'completed')->count();
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'totalBookings' => $totalBookings,
+            'confirmedBookings' => $confirmedBookings,
+            'completedBookings' => $completedBookings,
         ]);
     }
 

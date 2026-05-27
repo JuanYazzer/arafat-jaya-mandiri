@@ -8,7 +8,7 @@
             <h1 class="text-5xl font-bold mb-4">Sewa Truk Cepat, Harga Transparan</h1>
             <p class="text-xl mb-8 text-blue-100">Solusi terpercaya untuk kebutuhan logistik Anda</p>
             <a href="{{ route('booking.create') }}" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-8 py-2 bg-white text-blue-600 hover:bg-gray-100 text-lg">
-                Book Now
+                Pesan Sekarang
             </a>
         </div>
     </section>
@@ -147,7 +147,7 @@
             <h2 class="text-3xl font-bold mb-4">Siap untuk Sewa Truk?</h2>
             <p class="text-xl mb-8 text-blue-100">Dapatkan penawaran terbaik hari ini!</p>
             <a href="{{ route('booking.create') }}" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 h-10 px-8 py-2 bg-white text-blue-600 hover:bg-gray-100 text-lg">
-                Book Now
+                Pesan Sekarang
             </a>
         </div>
     </section>
