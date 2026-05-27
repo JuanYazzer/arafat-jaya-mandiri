@@ -24,9 +24,12 @@ Route::get('/about', [FrontendController::class, 'about'])->name('about');
 
 Route::get('/trucks', [FrontendController::class, 'trucks'])->name('trucks');
 
-Route::get('/booking', [BookingController::class, 'create'])->name('booking.create');
-Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
-Route::get('/booking/success/{booking}', [BookingController::class, 'success'])->name('booking.success');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/booking', [BookingController::class, 'create'])->name('booking.create');
+    Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+    Route::get('/booking/success/{booking}', [BookingController::class, 'success'])->name('booking.success');
+    Route::get('/my-bookings', [BookingController::class, 'myBookings'])->name('booking.my-bookings');
+});
 
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 
