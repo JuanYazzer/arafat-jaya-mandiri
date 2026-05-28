@@ -9,7 +9,7 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
             <div class="bg-white rounded-lg shadow p-6">
-                <form action="{{ route('admin.trucks.store') }}" method="POST">
+                <form action="{{ route('admin.trucks.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-4">
@@ -88,11 +88,10 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block mb-1 font-medium">Gambar / URL Gambar</label>
-                        <input type="text" name="image" value="{{ old('image') }}"
-                               placeholder="Contoh: truk-1.jpg"
-                               class="w-full border-gray-300 rounded">
-                        <p class="text-xs text-gray-500 mt-1">Simpan foto di dalam folder <code>public/images/trucks/</code> lalu ketikkan nama filenya saja di atas.</p>
+                        <label class="block mb-1 font-medium">Gambar Truk (Opsional)</label>
+                        <input type="file" name="image" accept="image/*"
+                               class="w-full border-gray-300 rounded p-1">
+                        <p class="text-xs text-gray-500 mt-1">Pilih gambar dari komputer Anda. Gambar akan diunggah ke Cloudinary.</p>
                         @error('image')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror

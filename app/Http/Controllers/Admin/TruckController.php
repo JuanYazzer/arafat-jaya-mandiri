@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Truck;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TruckController extends Controller
 {
@@ -30,11 +31,16 @@ class TruckController extends Controller
             'starting_price' => 'required|integer|min:1',
             'allowed_cargo_types' => 'nullable|string',
             'status' => 'required|in:available,in_use,repair',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'description' => 'nullable|string',
         ]);
 
         $validated['allowed_cargo_types'] = $this->formatCargoTypes($request->allowed_cargo_types);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('trucks', 'cloudinary');
+            $validated['image'] = Storage::disk('cloudinary')->url($path);
+        }
 
         Truck::create($validated);
 
@@ -58,11 +64,19 @@ class TruckController extends Controller
             'starting_price' => 'required|integer|min:1',
             'allowed_cargo_types' => 'nullable|string',
             'status' => 'required|in:available,in_use,repair',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'description' => 'nullable|string',
         ]);
 
         $validated['allowed_cargo_types'] = $this->formatCargoTypes($request->allowed_cargo_types);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('trucks', 'cloudinary');
+            $validated['image'] = Storage::disk('cloudinary')->url($path);
+        } else {
+            // Keep the old image if no new image is uploaded
+            unset($validated['image']);
+        }
 
         $truck->update($validated);
 

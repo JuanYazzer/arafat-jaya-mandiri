@@ -8,9 +8,9 @@
         <div class="mb-8 flex justify-center">
             <div class="flex items-center gap-2 bg-white rounded-xl border border-gray-200 shadow-sm p-1.5">
                 <button class="filter-btn px-5 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white transition-all" data-filter="all">Semua Truk</button>
-                <button class="filter-btn px-5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-all" data-filter="available">Available</button>
-                <button class="filter-btn px-5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-all" data-filter="in_use">In Use</button>
-                <button class="filter-btn px-5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-all" data-filter="repair">Repair</button>
+                <button class="filter-btn px-5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-all" data-filter="available">Tersedia</button>
+                <button class="filter-btn px-5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-all" data-filter="in_use">Digunakan</button>
+                <button class="filter-btn px-5 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-all" data-filter="repair">Perbaikan</button>
             </div>
         </div>
 
@@ -41,7 +41,7 @@
                         <div class="flex items-start justify-between mb-4">
                             <div>
                                 <h2 class="text-2xl font-bold mb-2">{{ $truck->name }}</h2>
-                                <p class="text-gray-600">License Plate: {{ $truck->license_plate ?? '-' }}</p>
+                                <p class="text-gray-600">Plat Nomor: {{ $truck->license_plate ?? '-' }}</p>
                             </div>
                             
                             @php
@@ -50,14 +50,20 @@
                                 elseif(strtolower($truck->status) === 'in use') $statusColor = 'bg-yellow-100 text-yellow-800';
                                 elseif(strtolower($truck->status) === 'repair') $statusColor = 'bg-red-100 text-red-800';
                             @endphp
+                            @php
+                                $statusLabel = ucfirst($truck->status);
+                                if(strtolower($truck->status) === 'available') $statusLabel = 'Tersedia';
+                                elseif(strtolower($truck->status) === 'in_use') $statusLabel = 'Digunakan';
+                                elseif(strtolower($truck->status) === 'repair') $statusLabel = 'Perbaikan';
+                            @endphp
                             <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 {{ $statusColor }}">
-                                {{ ucfirst($truck->status) }}
+                                {{ $statusLabel }}
                             </span>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4 mb-6">
                             <div>
-                                <h3 class="font-semibold text-sm text-gray-600 mb-1">Maximum Weight Capacity</h3>
+                                <h3 class="font-semibold text-sm text-gray-600 mb-1">Kapasitas Berat Maksimal</h3>
                                 <p class="text-lg font-semibold">{{ number_format($truck->max_weight ?? 0) }} kg</p>
                             </div>
                             <div>
@@ -65,7 +71,7 @@
                                 <p class="text-lg font-semibold">{{ $truck->total_volume ?? 0 }} CBM</p>
                             </div>
                             <div class="col-span-2">
-                                <h3 class="font-semibold text-sm text-gray-600 mb-1">Allowed Cargo Types</h3>
+                                <h3 class="font-semibold text-sm text-gray-600 mb-1">Jenis Barang yang Diizinkan</h3>
                                 <div class="flex flex-wrap gap-2 mt-2">
                                     @php
                                         // Assume allowed_cargo_types is stored as JSON or string
@@ -77,7 +83,7 @@
                                 </div>
                             </div>
                             <div class="col-span-2">
-                                <h3 class="font-semibold text-sm text-gray-600 mb-1">Starting Price</h3>
+                                <h3 class="font-semibold text-sm text-gray-600 mb-1">Harga Awal</h3>
                                 <p class="text-2xl font-bold text-blue-600">
                                     Rp {{ number_format($truck->starting_price ?? 0, 0, ',', '.') }} <span class="text-sm text-gray-600 font-normal">/ km</span>
                                 </p>

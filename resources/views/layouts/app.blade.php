@@ -125,7 +125,7 @@
                 </div>
 
                 <div class="border-t border-gray-800 mt-12 pt-8 text-center text-sm text-gray-500">
-                    &copy; 2026 TruckRental. All rights reserved.
+                    &copy; 2026 TruckRental. Hak Cipta Dilindungi.
                 </div>
             </div>
         </footer>

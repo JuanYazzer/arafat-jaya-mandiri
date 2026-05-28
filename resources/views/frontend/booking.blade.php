@@ -15,21 +15,7 @@
                         </div>
                         <div class="p-6 space-y-6">
                             
-                            <!-- Personal Info -->
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div class="space-y-2">
-                                    <label for="customer_name" class="text-sm font-medium leading-none">Nama Lengkap *</label>
-                                    <input type="text" id="customer_name" name="customer_name" value="{{ old('customer_name') }}" required placeholder="Masukkan nama Anda" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
-                                    @error('customer_name') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="space-y-2">
-                                    <label for="customer_phone" class="text-sm font-medium leading-none">No. WhatsApp *</label>
-                                    <input type="text" id="customer_phone" name="customer_phone" value="{{ old('customer_phone') }}" required placeholder="Contoh: 08123456789" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
-                                    @error('customer_phone') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-
-                            <hr>
+                            <!-- Personal info dihilangkan karena mengambil langsung dari User Profile -->
 
                             <div class="space-y-2">
                                 <label for="truck_id" class="text-sm font-medium leading-none">Pilih Truk *</label>

@@ -32,8 +32,10 @@ class BookingController extends Controller
         $truck = $booking->truck;
 
         if ($newStatus === 'confirmed') {
-            if ($truck && $truck->status !== 'available' && $booking->status !== 'confirmed') {
-                return back()->with('error', 'Truk sedang tidak tersedia, booking tidak bisa dikonfirmasi.');
+            // Jika truk sudah repair, tidak bisa dikonfirmasi.
+            // Namun jika in_use, itu wajar karena saat booking dibuat, statusnya langsung in_use.
+            if ($truck && $truck->status === 'repair' && $booking->status !== 'confirmed') {
+                return back()->with('error', 'Truk sedang diperbaiki, booking tidak bisa dikonfirmasi.');
             }
         }
 
@@ -42,7 +44,7 @@ class BookingController extends Controller
         ]);
 
         if ($truck) {
-            if ($newStatus === 'confirmed') {
+            if (in_array($newStatus, ['pending', 'confirmed'])) {
                 $truck->update([
                     'status' => 'in_use',
                 ]);
@@ -62,6 +64,14 @@ class BookingController extends Controller
 
     public function destroy(Booking $booking)
     {
+        $truck = $booking->truck;
+
+        if ($truck && $truck->status === 'in_use' && in_array($booking->status, ['pending', 'confirmed'])) {
+            $truck->update([
+                'status' => 'available',
+            ]);
+        }
+
         $booking->delete();
 
         return redirect()
