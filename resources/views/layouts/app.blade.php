@@ -130,16 +130,38 @@
             </div>
         </footer>
 
-        <!-- AI Chat Placeholder -->
-        <div class="fixed bottom-6 right-6 z-50">
-            <button class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg flex items-center justify-center transition-transform hover:scale-110 group">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- AI Chat Widget -->
+        <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+            <div id="ai-chat-panel" class="hidden w-80 max-w-[90vw] rounded-3xl bg-slate-950/95 border border-slate-700 shadow-2xl overflow-hidden text-white">
+                <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-800 bg-slate-900">
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded-full bg-blue-500 grid place-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold">Chat AI</p>
+                            <p class="text-xs text-slate-400">Tanya tentang truk...</p>
+                        </div>
+                    </div>
+                    <button id="ai-chat-close" class="text-slate-300 hover:text-white text-lg leading-none">×</button>
+                </div>
+                <div id="ai-chat-messages" class="h-56 overflow-y-auto px-4 py-3 space-y-3 text-sm bg-slate-950 text-slate-100">
+                    <div class="rounded-2xl bg-slate-900 px-3 py-2 text-slate-200">Halo! Ada yang bisa saya bantu?</div>
+                </div>
+                <div class="border-t border-slate-800 bg-slate-900 px-4 py-3">
+                    <div class="flex gap-2">
+                        <input id="ai-chat-input" type="text" placeholder="Tulis pertanyaan tentang truk..." class="flex-1 rounded-full border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <button id="ai-chat-send" class="rounded-full bg-blue-600 px-4 text-sm font-semibold text-white hover:bg-blue-500">Kirim</button>
+                    </div>
+                </div>
+            </div>
+
+            <button id="ai-chat-toggle" class="relative bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400" aria-label="Buka chat AI">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
-                <!-- Tooltip -->
-                <span class="absolute -top-10 right-0 w-max bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                    Chat AI (FAQ)
-                </span>
             </button>
         </div>
     </div>
@@ -172,6 +194,70 @@
                     }
                 });
             });
+            
+            const aiChatToggle = document.getElementById('ai-chat-toggle');
+            const aiChatPanel = document.getElementById('ai-chat-panel');
+            const aiChatClose = document.getElementById('ai-chat-close');
+            const aiChatSend = document.getElementById('ai-chat-send');
+            const aiChatInput = document.getElementById('ai-chat-input');
+            const aiChatMessages = document.getElementById('ai-chat-messages');
+
+            if (aiChatToggle && aiChatPanel) {
+                aiChatToggle.addEventListener('click', () => {
+                    aiChatPanel.classList.toggle('hidden');
+                    aiChatInput.focus();
+                });
+            }
+
+            if (aiChatClose) {
+                aiChatClose.addEventListener('click', () => {
+                    aiChatPanel.classList.add('hidden');
+                });
+            }
+
+            async function sendAiMessage() {
+                const message = aiChatInput.value.trim();
+                if (!message) return;
+
+                appendAiMessage(message, true);
+                aiChatInput.value = '';
+
+                try {
+                    const response = await fetch('/api/chatbot', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ message })
+                    });
+
+                    const data = await response.json();
+                    appendAiMessage(data.reply || 'Maaf, saya tidak dapat merespons saat ini.', false);
+                } catch (error) {
+                    appendAiMessage('Terjadi kesalahan. Silakan coba lagi.', false);
+                }
+            }
+
+            function appendAiMessage(text, isUser) {
+                const bubble = document.createElement('div');
+                bubble.textContent = text;
+                bubble.className = 'rounded-2xl px-3 py-2 max-w-[85%] break-words';
+                if (isUser) {
+                    bubble.classList.add('ml-auto', 'bg-blue-500', 'text-white');
+                } else {
+                    bubble.classList.add('bg-slate-800', 'text-slate-200');
+                }
+                aiChatMessages.appendChild(bubble);
+                aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+            }
+
+            if (aiChatSend && aiChatInput) {
+                aiChatSend.addEventListener('click', sendAiMessage);
+                aiChatInput.addEventListener('keydown', event => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        sendAiMessage();
+                    }
+                });
+            }
         });
     </script>
     </div>
