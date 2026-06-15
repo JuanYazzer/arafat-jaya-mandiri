@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin AJM',
-            'email' => 'admin@ajm.com',
+            'email' => 'ajmsewatruk@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
