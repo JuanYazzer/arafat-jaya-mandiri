@@ -24,7 +24,7 @@ Route::get('/about', [FrontendController::class, 'about'])->name('about');
 
 Route::get('/trucks', [FrontendController::class, 'trucks'])->name('trucks');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/booking', [BookingController::class, 'create'])->name('booking.create');
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
     Route::get('/booking/success/{booking}', [BookingController::class, 'success'])->name('booking.success');
@@ -48,7 +48,7 @@ Route::get('/dashboard', function () {
     }
 
     return redirect()->route('home');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 
 /*
@@ -59,7 +59,7 @@ Route::get('/dashboard', function () {
 | dan memiliki role admin.
 */
 
-Route::middleware(['auth', 'verified', 'admin'])
+Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
